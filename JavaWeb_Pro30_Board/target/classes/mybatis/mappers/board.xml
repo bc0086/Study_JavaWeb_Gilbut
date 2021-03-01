@@ -5,6 +5,7 @@
 
 <mapper namespace="mapper.board">
 
+	<!-- 글 정보를 저장할 resultMap 설정 -->
 	<resultMap type="articleVO" id="articlesResult">
 		<result property="level" column="level" />
 	    <result property="articleNO" column="articleNO" />
@@ -25,6 +26,53 @@
 			ORDER SIBLINGS BY articleNO DESC
 		]]>
 	</select>
+	
+	<!-- 새 글 추가 기능 : 글정보를 Map으로 전달 -->
+	<insert id="insertNewArticle" parameterType="java.util.Map"> 
+		<![CDATA[
+			INSERT into t_board(articleNO, title, content, imageFileName, id)
+			VALUES(#{articleNO}, #{title}, #{content}, #{imageFileName}, #{id})
+		]]>
+	</insert>
+	
+	<!-- 추가하는 새 글에 대한 글 번호 가져오기 -->
+	<select id="selectNewArticleNO" resultType="int">
+		<![CDATA[
+			SELECT max(articleNO)+1
+			FROM t_board
+		]]>
+	</select>
+	
+	<!-- 글 상세창 -->
+	<select id="selectArticle" resultType="articleVO" parameterType="int">
+		<![CDATA[
+			SELECT *
+			FROM t_board
+			WHERE articleNO = #{articleNO }
+		]]>
+	</select>
+	
+	<!-- 글 수정하기 -->
+	<update id="updateArticle" parameterType="java.util.Map">
+		UPDATE t_board
+		SET title=#{title }, content=#{content }
+		<if test="imageFileName != '' and imageFileName != null">
+			, imageFileName = #{imageFileName }
+		</if>
+		WHERE articleNO=#{articleNO }
+	</update>
+	
+	<!-- 글 삭제하기 -->
+	<delete id="deleteArticle" parameterType="int">
+		<![CDATA[
+			DELETE FROM t_board
+			WHERE articleNO in(
+				SELECT articleNO FROM t_board
+				START WITH articleNO = #{articleNO }
+				CONNECT BY PRIOR articleNO = parentNO )
+		]]>
+	</delete>
+	
 	
 	
 	

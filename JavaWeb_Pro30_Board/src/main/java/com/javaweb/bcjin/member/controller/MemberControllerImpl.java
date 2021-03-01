@@ -109,8 +109,16 @@ public class MemberControllerImpl implements MemberController {
 			HttpSession session = request.getSession();
 			session.setAttribute("member", memberVO);
 			session.setAttribute("isLogOn", true); // 세션에 로그인 상태를 true로 설정
-			mav.setViewName("redirect:/member/listMembers.do");
-				// memberVO로 반환된 값이 있으면 세션을 이용해 로그인 상태를 true로 설정
+			
+			// 로그인 성공 시 세션에 저장된 action값을 가져옴
+			String action = (String) session.getAttribute("action");
+			
+			// action값이 null이 아니면 action값을 뷰이름으로 지정해 글쓰기창으로 이동함
+			if(action != null) {
+				mav.setViewName("redirect:" + action);
+			} else {
+				mav.setViewName("redirect:/member/listMembers.do");
+			}
 		}
 		else {
 			rAttr.addAttribute("result", "loginFailed");
@@ -136,15 +144,20 @@ public class MemberControllerImpl implements MemberController {
 		return mav;
 	}
 	
-	/* 로그인창 요청 시 매개변수 result가 전송되면 변수 result에 값을 저장함
-	 * 최초로 로그인창을 요청할 때는 매개변수 result가 전송되지 않으므로 무시함 */
+	// 로그인 후 수행할 글쓰기 요청명을 action값에 저장함. 로그인 성공 후 바로 글쓰기 창으로 이동
 	@RequestMapping(value="/member/*Form.do", method=RequestMethod.GET)
 	private ModelAndView form(@RequestParam(value="result", required = false) String result,
+								@RequestParam(value="action", required = false) String action,
 								HttpServletRequest request,
 								HttpServletResponse response) throws Exception {
 //		String viewName = getViewName(request);
 		String viewName = (String) request.getAttribute("viewName");
 			// 인터셉터에서 바인딩 된 뷰이름을 가져옴.
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("action", action);
+			// 글쓰기 창 요청명을 action 속성으로 세션에 저장함.
+		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("result", result);
 		mav.setViewName(viewName);
