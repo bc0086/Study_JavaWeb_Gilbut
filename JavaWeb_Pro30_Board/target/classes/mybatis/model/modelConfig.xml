@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration 	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!-- typeAlias태그를 이용해 매퍼 파일에서 긴 이름의 클래스를 변칭으로 사용하게 설정함 -->
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.javaweb.bcjin.member.vo.MemberVO"  alias="memberVO" />
+		<typeAlias type="com.javaweb.bcjin.board.vo.ArticleVO"  alias="articleVO" />
+	</typeAliases>
+</configuration>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+"http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+	<!-- 공통레이아웃의 뷰이름을 지정함 / 전체 레이아웃을 정하는 JSP의 위치를 지정함 -->
+	<definition name="baseLayout" template="/WEB-INF/views/common/layout.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="/WEB-INF/views/common/header.jsp" />
+		<put-attribute name="side" value="/WEB-INF/views/common/side.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp" />
+	</definition>
+	
+	<!-- 기본적인 레이아웃은 baseLayout을 상속받음 -->
+	<definition name="main" extends="baseLayout">
+		<put-attribute name="title" value="메인페이지" />
+		<put-attribute name="body" value="/WEB-INF/views/main.jsp" />
+	</definition>
+	
+	<!-- /member/listMember.do로 요청했을 때 표시할 definition태그를 추가함 -->
+	<definition name="/member/listMembers" extends="baseLayout"> 
+		<!-- 컨트롤러에서 반환되는 뷰이름을 지정 -->
+		<put-attribute name="title" value="회원목록창" />
+			<!-- JSP페이지의 제목을 지정 -->
+		<put-attribute name="body" value="/WEB-INF/views/member/listMembers.jsp" />
+			<!-- 레이아웃 페이지의 본문에 표시할 JSP를 지정 -->
+	</definition>
+	
+	<!-- 로그인 기능 구현하기 -->
+	<definition name="/member/loginForm" extends="baseLayout">
+		<put-attribute name="title" value="로그인창" />
+		<put-attribute name="body" value="/WEB-INF/views/member/loginForm.jsp" />
+	</definition>
+</tiles-definitions>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:aop="http://www.springframework.org/schema/aop"
+xmlns:tx="http://www.springframework.org/schema/tx"
+xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+
+   	<bean  id="propertyPlaceholderConfigurer"
+    class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
+    	<property name="locations" >
+           	<!-- propertyPlaceholderConfigurer클래스를 이용해 
+           		 jdbc.properties 파일에서 데이터베이스 연결에 필요한 설정정보 가져옴 -->
+           	<value>/WEB-INF/config/jdbc/jdbc.properties</value>
+      	</property>
+   	</bean>
+    
+    <!-- 마이바티스에서 제공하는 PooledDataSource 클래스를 이용해서 dataSource 빈을 생성 -->
+    <bean id="dataSource" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+		<property name="driver" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+	
+	<!-- SqlSessionFactoryBean클래스를 이용해 dataSource속성에 dataSource빈을 설정함 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis/model/modelConfig.xml" />
+		<property name="mapperLocations" value="classpath:mybatis/mappers/*.xml"></property>
+	</bean>
+	
+	<!-- SqlSessionTemplate클래스를 이용해 sqlSession빈을 생성 -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+	
+	<!-- <bean id="memberDAO" class="com.spring.member.dao.MemberDAOImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean> 
+		MemberDAO는 개발자가 만든 클래스이므로 XML에서 설정하지 않고 자바코드에서 
+		애너테이션으로 설정함 -->
+</beans>

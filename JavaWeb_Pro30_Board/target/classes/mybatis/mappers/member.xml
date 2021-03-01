@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.member">
+	
+ 	<!-- memberVO를 이용 -->
+	<resultMap id="memResult" type="memberVO">
+		<result property="id" column="id" />
+        <result property="pwd" column="pwd" />
+        <result property="name" column="name" />
+        <result property="email" column="email" />
+        <result property="joinDate" column="joinDate" />
+	</resultMap>
+
+	<!-- 전체 회원 정보 조회 -->
+	<select id="selectAllMemberList" resultMap="memResult">
+    	<![CDATA[
+        	select * from t_member	order by joinDate desc	 	
+      	]]>
+	</select>
+	
+	<!-- 회원 ID 조회 -->
+	<!-- MemberDAO에서 접근 시 사용할 SQL문의 id를 지정함 -->
+	<select id="selectName" resultType="String">
+		<![CDATA[
+			select name from t_member where id = 'hong'
+		]]>
+	</select>
+	
+	<!-- 회원 비밀번호 조회 -->
+	<select id="selectPwd" resultType="int">
+		<![CDATA[
+			select pwd from t_member where id = 'hong'
+		]]>
+	</select>
+	
+	<!-- 선택창(id)으로 회원 정보 조회 -->
+	<select id="selectMemberById" resultType="memberVO" parameterType="String">
+		<!-- MemberDAO에서 메서드를 호출하면서 parameterType으로 전달된 
+			 매개변수 이름을 select문의 id의 조건값으로 사용함 -->
+		<![CDATA[
+			select * from t_member where id = #{id}
+		]]>
+	</select>
+	
+	<!-- 선택창(pwd)으로 회원 정보 조회 -->
+	<select id="selectMemberByPwd" resultMap="memResult" parameterType="int">
+		<![CDATA[
+			select * from t_member where pwd = #{pwd}
+		]]>
+	</select>
+	
+	<!-- 회원 가입하기 -->
+	<insert id = "insertMember" parameterType="memberVO">
+		<!-- MemberDAO에서 회원 정보를 memberVO의 속성에 저장해서 넘긴다. -->
+		<![CDATA[
+			insert into t_member(id, pwd, name, email)
+			values(#{id}, #{pwd}, #{name}, #{email})
+		]]>
+			<!-- memberVO의 속성 이름에 저장된 값을 value로 설정한다. -->
+	</insert>
+	
+	<!-- 회원 가입하기 HashMap 버전 -->
+	<insert id = "insertMember2" parameterType="java.util.HashMap">
+		<!-- MemberDAO에서 회원 정보를 HashMap에 담아서 전달한다. -->
+		<![CDATA[
+			insert into t_member(id, pwd, name, email)
+			values(#{id}, #{pwd}, #{name}, #{email})
+		]]>
+			<!-- HashMap에 각각의 key로 저장된 value를 가져와 테이블에 추가한다. -->
+	</insert>
+	
+	<!-- 회원 정보 수정하기 -->
+	<update id = "updateMember" parameterType="memberVO">
+		<![CDATA[
+			update t_member
+			set pwd=#{pwd}, name=#{name}, email=#{email}
+			where id=#{id}
+		]]>
+	</update>
+	
+	<!-- 회원 정보 삭제하기 -->
+	<delete id="deleteMember" parameterType="String">
+		<![CDATA[
+			delete from t_member
+			where id = #{id}
+		]]>
+	</delete>
+	
+	<!-- 동적태그 where 이용한 회원 정보 조회 -->
+	<select id="searchMember" parameterType="memberVO" resultMap="memResult">
+		<![CDATA[
+			select *
+			from t_member
+		]]>
+		<where>
+			<if test="name != '' and name != null">
+				name = #{name}
+			</if>
+			<if test="email != '' and email != null">
+				and email = #{email}
+			</if>
+		</where>
+		order by joinDate desc
+	</select>
+	
+	<!-- 동적태그 choose 이용한 회원 정보 조회 -->
+	<!-- <select id="searchMember" parameterType="memberVO" resultMap="memResult">
+		<![CDATA[
+			select *
+			from t_member
+		]]>
+		
+		order by joinDate desc
+	</select> -->
+	
+	
+	<!-- 동적태그 foreach 이용한 회원 정보 조회 -->
+	<select id="foreachSelect" resultMap="memResult" parameterType="java.util.Map">
+		<!-- SQL문에 List인스턴스나 배열을 전달하면 자동으로 Map에 전달되어 이름을 키로 사용
+			 List인스턴스는 list를 키로 사용하고 배열은 array를 키로 사용함. -->
+		<![CDATA[
+			select *
+			from t_member
+		]]>
+		where name in
+		<foreach collection="list" item="item" open="(" separator="," close=")" >
+			#{item} <!-- foreach문을 이용해 반복해서 list의 값을 표시함 -->
+		</foreach>
+		order by joinDate desc
+	</select>
+	
+	<!-- 동적태그 foreach 이용한 회원 정보 추가하기 -->
+	<!-- MySQL과는 달리 오라클에서는 insert문을 반복해서 사용하면 오류가 발생함 -->
+	<!-- <insert id= "foreachInsert" parameterType="java.util.Map">
+		insert into t_member(id, pwd, name, email)
+		values
+		<foreach item="item" collection="list">
+			(#{item.id},
+				#{item.pwd},
+				#{item.name},
+				#{item.email}
+			)
+		</foreach> 
+	</insert> -->
+	
+	<!-- foreach로 반복 작업을 할 때에는 처음에 insert all을 추가함 -->
+	<!-- foreach로 반복 작업 종료 시 select * form dual을 마지막에 추가함 -->
+	<insert id="foreachInsert" parameterType="java.util.Map">
+		<foreach item="item" collection="list" 
+		open="insert all" separator="" close="select * from dual">
+			<!-- foreach 태그 안에 위치해야 함. -->
+			into t_member(id, pwd, name, email)
+			values (#{item.id},
+					#{item.pwd},
+					#{item.name},
+					#{item.email}
+			)
+		</foreach>
+	</insert>
+	
+	<!-- sql태그와 include태그로 SQL문 중복 제거하기 -->
+	<sql id="a">
+		<![CDATA[
+			select * from t_member
+		]]>
+	</sql> <!-- sql태그를 사용해 공통 SQL문의 refid를 a로 지정함 -->
+	
+	<!-- <select id="searchMember" parameterType="memberVO" resultMap="memResult">
+		<include refid="a" />
+		<where>
+			<choose>
+				<when test="name != '' and name != null and email !='' and email != null">
+					name = #{name} and email=#{email}
+				</when>
+				<when test = "name != '' and name != null">
+					name = #{name}
+				</when>
+				<when test = "email != '' and email != null">
+					email = #{email}
+				</when>
+			</choose>
+		</where>
+		order by joinDate desc
+	</select>
+	
+	<select id="foreachSelect" resultMap="memResult" parameterType="java.util.Map">
+		<include refid="a" />
+		where name in
+		<foreach collection="list" item="item" open="(" separator="," close=")" >
+			#{item}
+		</foreach>
+	</select> -->
+	
+	<!-- 오라클 연동해 like 검색하는 방법 -->
+	<select id="selectLike" resultMap="memResult" parameterType="String">
+		<!-- 오류발생 -->
+		<!-- <![CDATA[
+			select * from t_member
+			where
+			name like '%' #{name} '%'
+		]]> -->
+		
+		<!-- 정상작동 -->
+		<![CDATA[
+			select * from t_member
+			where
+			name like '%' || #{name} || '%'
+		]]>
+	</select>
+	
+	<!-- 로그인 시 회원정보 조회 -->
+	<select id="loginById" resultType="memberVO" parameterType="memberVO">
+		<![CDATA[
+			select * from t_member
+			where id= #{id} and pwd=#{pwd}
+		]]>
+	</select>
+</mapper>
