@@ -11,11 +11,15 @@ public interface BoardDAO {
 	public List selectAllArticlesList() throws DataAccessException;
 
 	public int insertNewArticle(Map articleMap);
+	
+	public void insertNewImage(Map articleMap) throws DataAccessException;
 
 	public ArticleVO selectArticle(int articleNO) throws DataAccessException;
 
 	public void updateArticle(Map<String, Object> articleMap);
 
 	public void deleteArticle(int articleNO);
+	
+	public List selectImageFileList(int articleNO) throws DataAccessException;
 
 }

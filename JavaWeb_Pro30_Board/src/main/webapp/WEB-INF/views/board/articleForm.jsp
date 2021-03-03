@@ -59,11 +59,12 @@
 			</td>
      	</tr>
      	
-     	<tr>
+     	<!-- <tr>
         	<td align="right">이미지파일 첨부:  </td>
 	     	<td><input type="file" name="imageFileName"  onchange="readURL(this);" /></td>
          	<td><img id="preview" src="#" width=200 height=200/></td>
-         	
+        </tr> -->
+        <tr> 	
          	<td align="right">이미지파일 첨부</td>
          	<td align="left"><input type="button" value="파일 추가" onClick="fn_addFile()"/></td>
 	 	</tr>

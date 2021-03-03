@@ -16,6 +16,13 @@
 	    <result property="imageFileName" column="imageFileName" />
 	</resultMap>
 	
+	<!-- 이미지 파일 정보를 저장할 resultMap 설정 -->
+	<resultMap type="imageVO" id="imgResult">
+		<result property="imageFileNO" column="imageFileNO" />
+		<result property="articleNO" column="articleNO" />
+		<result property="imageFileName" column="imageFileName" />
+	</resultMap>
+	
 	<!-- 모든 글 목록 나타내기 -->
 	<select id="selectAllArticlesList" resultMap="articlesResult">
 		<![CDATA[
@@ -27,13 +34,34 @@
 		]]>
 	</select>
 	
-	<!-- 새 글 추가 기능 : 글정보를 Map으로 전달 -->
-	<insert id="insertNewArticle" parameterType="java.util.Map"> 
+	<!-- 새 글 추가 기능(단일 이미지 추가) : 글정보를 Map으로 전달 -->
+	<!-- <insert id="insertNewArticle" parameterType="java.util.Map"> 
 		<![CDATA[
 			INSERT into t_board(articleNO, title, content, imageFileName, id)
 			VALUES(#{articleNO}, #{title}, #{content}, #{imageFileName}, #{id})
 		]]>
-	</insert>
+	</insert> -->
+	
+	<!--다중 이미지 추가 SQL문 -->   
+ 
+    <insert id="insertNewArticle"  parameterType="java.util.Map">
+    <![CDATA[
+      insert into t_board(articleNO, id, title, content, imageFileName)
+      values(#{articleNO}, #{id}, #{title}, #{content}, null)
+    ]]>      
+  </insert>
+
+ 
+   <insert id="insertNewImage"  parameterType="java.util.Map">
+    <foreach item="item"  collection="list"   open="INSERT ALL" 
+                  separator=" " close="SELECT * FROM DUAL" >
+      INTO t_imageFile(imageFileNO, imageFileName, articleNO, regDate)
+      VALUES (#{item.imageFileNO}, #{item.imageFileName}, #{item.articleNO}, sysdate)
+    </foreach>
+  </insert>
+
+	
+	
 	
 	<!-- 추가하는 새 글에 대한 글 번호 가져오기 -->
 	<select id="selectNewArticleNO" resultType="int">
@@ -74,6 +102,19 @@
 	</delete>
 	
 	
+	<select id="selectNewImageFileNO" resultType="int"  >
+    <![CDATA[
+      SELECT  nvl(max(imageFileNO),0) from t_imageFile		
+    ]]>
+  </select>
+	
+
+  <select  id="selectImageFileList" resultMap="imgResult" parameterType="int">
+    <![CDATA[
+      SELECT * from t_imageFile
+      where articleNO=#{articleNO}	
+    ]]>
+  </select> 
 	
 	
 	

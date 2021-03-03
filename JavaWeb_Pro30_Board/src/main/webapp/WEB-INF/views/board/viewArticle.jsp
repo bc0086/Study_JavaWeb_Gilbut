@@ -7,6 +7,8 @@
 	request.setCharacterEncoding("UTF-8");
 %>
 <c:set var="contextPath" value="${pageContext.request.contextPath }"></c:set>
+<c:set var="article"  value="${articleMap.article}"  />
+<c:set var="imageFileList"  value="${articleMap.imageFileList}"  />
 <!DOCTYPE html>
 <html>
 <head>
@@ -128,29 +130,28 @@
 		   	</td>  
 		</tr>
 		
-		<%-- <c:if test="${not empty article.imageFileName && article.imageFileName != 'null' }">
-			<tr>
-				<td width="20%" align="center" bgcolor="#FF9933"  rowspan="2"> 이미지</td>
-				<td>
-					<!-- 이미지 수정에 대비해 hidden태그에 원래 이미지 파일이름을 저장 -->
-					<input type ="hidden" name="originalFileName" value="${article.imageFileName }">
-						
-					<!-- FileDownloadController서블릿에 이미지 파일이름과 글 번호를 전송해
-						이미지를 img태그에 표시함 -->
-					<img src="${contextPath }/download.do?articleNO=${article.articleNO}
-						&imageFileName=${article.imageFileName}" id="preview" /> <br />
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<!-- 수정된 이미지 파일 이름을 전송 -->
-	       			<input type="file" name="imageFileName" id="i_imageFileName" disabled   
-	       				onchange="readURL(this);"   />
-				</td>
-			</tr>
-		</c:if> --%>
 		
-		<c:choose>
+ <c:if test="${not empty imageFileList && imageFileList!='null' }">
+	  <c:forEach var="item" items="${imageFileList}" varStatus="status" >
+		    <tr>
+			    <td width="150" align="center" bgcolor="#FF9933"  rowspan="2">
+			      이미지${status.count }
+			   </td>
+			   <td>
+			     <input  type= "hidden"   name="originalFileName" value="${item.imageFileName }" />
+			    <img src="${contextPath}/download.do?articleNO=${article.articleNO}&imageFileName=${item.imageFileName}" id="preview"  /><br>
+			   </td>   
+			  </tr>  
+			  <tr>
+			    <td>
+			       <input  type="file"  name="imageFileName " id="i_imageFileName"   disabled   onchange="readURL(this);"   />
+			    </td>
+			 </tr>
+		</c:forEach>
+ </c:if>
+ 	
+		
+		<%-- <c:choose>
 			<c:when test="${not empty article.imageFileName && article.imageFileName!='null' }">
 			<tr>
 				<td width="20%" align="center" bgcolor="#FF9933"  rowspan="2"> 이미지</td>
@@ -192,7 +193,7 @@
 				    </td>
 			  	</tr>
 			</c:otherwise>
-		</c:choose>
+		</c:choose> --%>
 		
 		<tr>
 			<td width="20%" align="center" bgcolor="#FF9933"> 등록일자 </td>
