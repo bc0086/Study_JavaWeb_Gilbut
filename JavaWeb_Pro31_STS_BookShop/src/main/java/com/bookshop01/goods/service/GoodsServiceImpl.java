@@ -19,24 +19,31 @@ public class GoodsServiceImpl implements GoodsService{
 	@Autowired
 	private GoodsDAO goodsDAO;
 	
+	// newbook, bestseller, steadyseller를 조건으로 각각 도서정보를 조회해서 HashMap에 저장한 후 반환함
 	public Map<String,List<GoodsVO>> listGoods() throws Exception {
 		Map<String,List<GoodsVO>> goodsMap=new HashMap<String,List<GoodsVO>>();
 		List<GoodsVO> goodsList=goodsDAO.selectGoodsList("bestseller");
 		goodsMap.put("bestseller",goodsList);
+		
 		goodsList=goodsDAO.selectGoodsList("newbook");
 		goodsMap.put("newbook",goodsList);
 		
 		goodsList=goodsDAO.selectGoodsList("steadyseller");
 		goodsMap.put("steadyseller",goodsList);
+		
 		return goodsMap;
 	}
 	
+	// 상품정보와 이미지 정보를 조회한 후 HashMap에 저장함
 	public Map goodsDetail(String _goods_id) throws Exception {
-		Map goodsMap=new HashMap();
+		Map goodsMap = new HashMap();
+		
 		GoodsVO goodsVO = goodsDAO.selectGoodsDetail(_goods_id);
 		goodsMap.put("goodsVO", goodsVO);
+		
 		List<ImageFileVO> imageList =goodsDAO.selectGoodsDetailImage(_goods_id);
 		goodsMap.put("imageList", imageList);
+		
 		return goodsMap;
 	}
 	

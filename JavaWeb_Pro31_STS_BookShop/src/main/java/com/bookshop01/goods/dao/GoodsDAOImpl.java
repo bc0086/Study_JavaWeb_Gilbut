@@ -12,38 +12,40 @@ import com.bookshop01.goods.vo.GoodsVO;
 import com.bookshop01.goods.vo.ImageFileVO;
 
 @Repository("goodsDAO")
-public class GoodsDAOImpl  implements GoodsDAO{
+public class GoodsDAOImpl implements GoodsDAO {
 	@Autowired
 	private SqlSession sqlSession;
 
 	@Override
-	public List<GoodsVO> selectGoodsList(String goodsStatus ) throws DataAccessException {
-		List<GoodsVO> goodsList=(ArrayList)sqlSession.selectList("mapper.goods.selectGoodsList",goodsStatus);
-	   return goodsList;	
-     
+	public List<GoodsVO> selectGoodsList(String goodsStatus) throws DataAccessException {
+		List<GoodsVO> goodsList = (ArrayList) sqlSession.selectList("mapper.goods.selectGoodsList", goodsStatus);
+			// 메서드 호출 시 전달된 조건으로 도서 정보를 조회함.
+		return goodsList;
 	}
+
 	@Override
 	public List<String> selectKeywordSearch(String keyword) throws DataAccessException {
-	   List<String> list=(ArrayList)sqlSession.selectList("mapper.goods.selectKeywordSearch",keyword);
-	   return list;
+		List<String> list = (ArrayList) sqlSession.selectList("mapper.goods.selectKeywordSearch", keyword);
+		return list;
 	}
-	
+
 	@Override
-	public ArrayList selectGoodsBySearchWord(String searchWord) throws DataAccessException{
-		ArrayList list=(ArrayList)sqlSession.selectList("mapper.goods.selectGoodsBySearchWord",searchWord);
-		 return list;
+	public ArrayList selectGoodsBySearchWord(String searchWord) throws DataAccessException {
+		ArrayList list = (ArrayList) sqlSession.selectList("mapper.goods.selectGoodsBySearchWord", searchWord);
+		return list;
 	}
-	
+
 	@Override
-	public GoodsVO selectGoodsDetail(String goods_id) throws DataAccessException{
-		GoodsVO goodsVO=(GoodsVO)sqlSession.selectOne("mapper.goods.selectGoodsDetail",goods_id);
+	public GoodsVO selectGoodsDetail(String goods_id) throws DataAccessException {
+		GoodsVO goodsVO = (GoodsVO) sqlSession.selectOne("mapper.goods.selectGoodsDetail", goods_id);
 		return goodsVO;
 	}
-	
+
 	@Override
-	public List<ImageFileVO> selectGoodsDetailImage(String goods_id) throws DataAccessException{
-		List<ImageFileVO> imageList=(ArrayList)sqlSession.selectList("mapper.goods.selectGoodsDetailImage",goods_id);
+	public List<ImageFileVO> selectGoodsDetailImage(String goods_id) throws DataAccessException {
+		List<ImageFileVO> imageList = (ArrayList) sqlSession.selectList("mapper.goods.selectGoodsDetailImage",
+				goods_id);
 		return imageList;
 	}
-	
+
 }

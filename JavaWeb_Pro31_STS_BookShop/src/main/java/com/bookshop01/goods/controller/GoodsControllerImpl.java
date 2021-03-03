@@ -29,15 +29,21 @@ public class GoodsControllerImpl extends BaseController   implements GoodsContro
 	private GoodsService goodsService;
 	
 	@RequestMapping(value="/goodsDetail.do" ,method = RequestMethod.GET)
+	// 조회할 상품번호를 전달 받음
 	public ModelAndView goodsDetail(@RequestParam("goods_id") String goods_id,
 			                       HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String viewName=(String)request.getAttribute("viewName");
 		HttpSession session=request.getSession();
-		Map goodsMap=goodsService.goodsDetail(goods_id);
+		
+		// 상품정보를 조회한 후 Map으로 반환
+		Map goodsMap=goodsService.goodsDetail(goods_id); 
 		ModelAndView mav = new ModelAndView(viewName);
 		mav.addObject("goodsMap", goodsMap);
+		
+		// 조회한 상품정보를 빠른 메뉴에 표시하기 위해 전달함.
 		GoodsVO goodsVO=(GoodsVO)goodsMap.get("goodsVO");
-		addGoodsInQuick(goods_id,goodsVO,session);
+		addGoodsInQuick(goods_id, goodsVO, session);
+		
 		return mav;
 	}
 	
@@ -53,7 +59,7 @@ public class GoodsControllerImpl extends BaseController   implements GoodsContro
 		keyword = keyword.toUpperCase();
 	    List<String> keywordList =goodsService.keywordSearch(keyword);
 	    
-	 // ���� �ϼ��� JSONObject ����(��ü)
+	 // ���� �ϼ��� JSONObject ����(��ü)
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("keyword", keywordList);
 		 		
@@ -74,30 +80,36 @@ public class GoodsControllerImpl extends BaseController   implements GoodsContro
 	}
 	
 	private void addGoodsInQuick(String goods_id,GoodsVO goodsVO,HttpSession session){
-		boolean already_existed=false;
-		List<GoodsVO> quickGoodsList; //�ֱ� �� ��ǰ ���� ArrayList
-		quickGoodsList=(ArrayList<GoodsVO>)session.getAttribute("quickGoodsList");
+		boolean already_existed = false;
+		List<GoodsVO> quickGoodsList;
 		
-		if(quickGoodsList!=null){
-			if(quickGoodsList.size() < 4){ //�̸��� ��ǰ ����Ʈ�� ��ǰ������ ���� ������ ���
-				for(int i=0; i<quickGoodsList.size();i++){
-					GoodsVO _goodsBean=(GoodsVO)quickGoodsList.get(i);
+		// 세션에 저장된 최근 본 상품 목록을 가져옴
+		quickGoodsList = (ArrayList<GoodsVO>)session.getAttribute("quickGoodsList");
+		
+		if(quickGoodsList!=null) { // 최근 본 상품이 있는 경우
+			if(quickGoodsList.size() < 4){ // 상품 목록이 네 개 이하인 경우
+				for(int i=0; i<quickGoodsList.size(); i++){
+					GoodsVO _goodsBean = (GoodsVO)quickGoodsList.get(i);
+					// 상품목록을 가져와 이미 존재하는 상품인지 비교함
+					// 이미 존재하는 경우 already_existed를 true로 설정함
 					if(goods_id.equals(_goodsBean.getGoods_id())){
-						already_existed=true;
+						already_existed = true;
 						break;
-					}
+					} 
 				}
-				if(already_existed==false){
+				// already_existed가 false이면 상품정보를 목록에 저장함
+				if(already_existed == false){
 					quickGoodsList.add(goodsVO);
 				}
 			}
-			
-		}else{
+		} else {
+			// 최근 본 상품 목록이 없으면 생성하여 상품정보를 저장함
 			quickGoodsList =new ArrayList<GoodsVO>();
 			quickGoodsList.add(goodsVO);
-			
 		}
 		session.setAttribute("quickGoodsList",quickGoodsList);
+			// 최근 본 상품 목록을 세션에 저장함
 		session.setAttribute("quickGoodsListNum", quickGoodsList.size());
+			// 최근 본 상품 목록에 저장된 상품 개수를 세션에 저장함
 	}
 }
