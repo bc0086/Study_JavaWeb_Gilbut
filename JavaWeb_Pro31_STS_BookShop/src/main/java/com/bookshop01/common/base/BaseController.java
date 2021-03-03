@@ -25,7 +25,7 @@ import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
 import com.bookshop01.goods.vo.ImageFileVO;
 
 public abstract class BaseController  {
-	private static final String CURR_IMAGE_REPO_PATH = "C:\\shopping\\file_repo";
+	private static final String CURR_IMAGE_REPO_PATH = "C:\\03Workspace\\etc\\File_repo\\JavaWeb_Pro31_Shopping";
 	
 	protected List<ImageFileVO> upload(MultipartHttpServletRequest multipartRequest) throws Exception{
 		List<ImageFileVO> fileList= new ArrayList<ImageFileVO>();
@@ -41,12 +41,12 @@ public abstract class BaseController  {
 			
 			File file = new File(CURR_IMAGE_REPO_PATH +"\\"+ fileName);
 			if(mFile.getSize()!=0){ //File Null Check
-				if(! file.exists()){ //°æ·Î»ó¿¡ ÆÄÀÏÀÌ Á¸ÀçÇÏÁö ¾ÊÀ» °æ¿ì
-					if(file.getParentFile().mkdirs()){ //°æ·Î¿¡ ÇØ´çÇÏ´Â µð·ºÅä¸®µéÀ» »ý¼º
-							file.createNewFile(); //ÀÌÈÄ ÆÄÀÏ »ý¼º
+				if(! file.exists()){ //ï¿½ï¿½Î»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+					if(file.getParentFile().mkdirs()){ //ï¿½ï¿½Î¿ï¿½ ï¿½Ø´ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ä¸®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+							file.createNewFile(); //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 					}
 				}
-				mFile.transferTo(new File(CURR_IMAGE_REPO_PATH +"\\"+"temp"+ "\\"+originalFileName)); //ÀÓ½Ã·Î ÀúÀåµÈ multipartFileÀ» ½ÇÁ¦ ÆÄÀÏ·Î Àü¼Û
+				mFile.transferTo(new File(CURR_IMAGE_REPO_PATH +"\\"+"temp"+ "\\"+originalFileName)); //ï¿½Ó½Ã·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ multipartFileï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï·ï¿½ ï¿½ï¿½ï¿½ï¿½
 			}
 		}
 		return fileList;

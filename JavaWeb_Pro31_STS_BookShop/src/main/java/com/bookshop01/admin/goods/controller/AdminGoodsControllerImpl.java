@@ -32,7 +32,7 @@ import com.bookshop01.member.vo.MemberVO;
 @Controller("adminGoodsController")
 @RequestMapping(value="/admin/goods")
 public class AdminGoodsControllerImpl extends BaseController  implements AdminGoodsController{
-	private static final String CURR_IMAGE_REPO_PATH = "C:\\shopping\\file_repo";
+	private static final String CURR_IMAGE_REPO_PATH = "C:\\03Workspace\\etc\\File_repo\\JavaWeb_Pro31_Shopping";
 	@Autowired
 	private AdminGoodsService adminGoodsService;
 	
@@ -43,7 +43,7 @@ public class AdminGoodsControllerImpl extends BaseController  implements AdminGo
 		ModelAndView mav = new ModelAndView(viewName);
 		HttpSession session=request.getSession();
 		session=request.getSession();
-		session.setAttribute("side_menu", "admin_mode"); //¸¶ÀÌÆäÀÌÁö »çÀÌµå ¸Þ´º·Î ¼³Á¤ÇÑ´Ù.
+		session.setAttribute("side_menu", "admin_mode"); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ ï¿½Þ´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 		
 		String fixedSearchPeriod = dateMap.get("fixedSearchPeriod");
 		String section = dateMap.get("section");
@@ -129,7 +129,7 @@ public class AdminGoodsControllerImpl extends BaseController  implements AdminGo
 				}
 			}
 			message= "<script>";
-			message += " alert('»õ»óÇ°À» Ãß°¡Çß½À´Ï´Ù.');";
+			message += " alert('ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½.');";
 			message +=" location.href='"+multipartRequest.getContextPath()+"/admin/goods/addNewGoodsForm.do';";
 			message +=("</script>");
 		}catch(Exception e) {
@@ -142,7 +142,7 @@ public class AdminGoodsControllerImpl extends BaseController  implements AdminGo
 			}
 			
 			message= "<script>";
-			message += " alert('¿À·ù°¡ ¹ß»ýÇß½À´Ï´Ù. ´Ù½Ã ½ÃµµÇØ ÁÖ¼¼¿ä');";
+			message += " alert('ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½. ï¿½Ù½ï¿½ ï¿½Ãµï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ï¿½ï¿½');";
 			message +=" location.href='"+multipartRequest.getContextPath()+"/admin/goods/addNewGoodsForm.do';";
 			message +=("</script>");
 			e.printStackTrace();
