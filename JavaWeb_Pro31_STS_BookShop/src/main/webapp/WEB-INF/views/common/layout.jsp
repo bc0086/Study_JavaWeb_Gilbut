@@ -5,6 +5,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>    
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="contextPath"  value="${pageContext.request.contextPath}"  />
+<c:set var ="goods" value="${goodsMap.goodsVO }"></c:set>
 <%
   request.setCharacterEncoding("utf-8");
 %>
@@ -32,6 +33,7 @@
 			'centerMarkers' : false
 		});
 	});
+	
 	// 스티키 		
 	$(function() {
 		$("#sticky").stickySidebar({
@@ -40,9 +42,11 @@
 		});
 	});
 </script>
-	<title><tiles:insertAttribute name="title" /></title>
-	
+	<!-- 브라우저 타이틀에 상품 제목 표시하기 -->
+	<title>${goods.goods_title }</title>
+	<%-- <title><tiles:insertAttribute name="title" /></title> --%>
 </head>
+
 <body>
 	<div id="outer_wrap">
 		<div id="wrap">

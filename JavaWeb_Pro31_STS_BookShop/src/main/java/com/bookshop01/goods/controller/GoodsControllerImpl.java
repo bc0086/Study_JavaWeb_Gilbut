@@ -47,9 +47,13 @@ public class GoodsControllerImpl extends BaseController   implements GoodsContro
 		return mav;
 	}
 	
-	@RequestMapping(value="/keywordSearch.do",method = RequestMethod.GET,produces = "application/text; charset=utf8")
+	// ajax이용한 검색 자동완성 기능
+	@RequestMapping(value="/keywordSearch.do", method = RequestMethod.GET, 
+			produces = "application/text; charset=utf8") 
+				// 브라우저로 전송하는 json데이터의 한글인코딩을 지정함
 	public @ResponseBody String  keywordSearch(@RequestParam("keyword") String keyword,
-			                                  HttpServletRequest request, HttpServletResponse response) throws Exception{
+			                                  HttpServletRequest request, 
+			                                  HttpServletResponse response) throws Exception{
 		response.setContentType("text/html;charset=utf-8");
 		response.setCharacterEncoding("utf-8");
 		//System.out.println(keyword);
@@ -58,25 +62,26 @@ public class GoodsControllerImpl extends BaseController   implements GoodsContro
 	
 		keyword = keyword.toUpperCase();
 	    List<String> keywordList =goodsService.keywordSearch(keyword);
+	    	// 가져온 키워드가 포함된 상품 제목을 조회함
 	    
-	 // ���� �ϼ��� JSONObject ����(��ü)
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("keyword", keywordList);
-		 		
-	    String jsonInfo = jsonObject.toString();
-	   // System.out.println(jsonInfo);
+		jsonObject.put("keyword", keywordList); // 조회한 데이터를 json에 저장함.
+
+		String jsonInfo = jsonObject.toString(); // json을 문자열로 변환한 후 브라우저로 출력함
+		// System.out.println(jsonInfo);
 	    return jsonInfo ;
 	}
 	
 	@RequestMapping(value="/searchGoods.do" ,method = RequestMethod.GET)
 	public ModelAndView searchGoods(@RequestParam("searchWord") String searchWord,
-			                       HttpServletRequest request, HttpServletResponse response) throws Exception{
+			                       HttpServletRequest request, 
+			                       HttpServletResponse response) throws Exception{
 		String viewName=(String)request.getAttribute("viewName");
 		List<GoodsVO> goodsList=goodsService.searchGoods(searchWord);
+			// 검색창에서 가져온 단어가 포함된 상품 제목을 조회함
 		ModelAndView mav = new ModelAndView(viewName);
 		mav.addObject("goodsList", goodsList);
 		return mav;
-		
 	}
 	
 	private void addGoodsInQuick(String goods_id,GoodsVO goodsVO,HttpSession session){
@@ -92,9 +97,10 @@ public class GoodsControllerImpl extends BaseController   implements GoodsContro
 					GoodsVO _goodsBean = (GoodsVO)quickGoodsList.get(i);
 					// 상품목록을 가져와 이미 존재하는 상품인지 비교함
 					// 이미 존재하는 경우 already_existed를 true로 설정함
-					if(goods_id.equals(_goodsBean.getGoods_id())){
+					if(goods_id.equals(Integer.toString(_goodsBean.getGoods_id()))){
 						already_existed = true;
-						break;
+						// break;
+						return;
 					} 
 				}
 				// already_existed가 false이면 상품정보를 목록에 저장함
