@@ -12,7 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!-- 로그인 실채시 리다이렉트 되면서 로그인 실패 메세지를 표시함. -->
+<!-- 로그인 실패시 리다이렉트 되면서 로그인 실패 메세지를 표시함. -->
 <c:choose>
 	<c:when test="${result=='loginFailed' }">
 		<script>

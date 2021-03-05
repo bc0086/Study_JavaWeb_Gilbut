@@ -7,8 +7,10 @@
 <script type="text/javascript">
 	var loopSearch = true; // 제시된 키워드를 클릭하면 keywordSearch()함수의 실행을 중지시킴
 	function keywordSearch() {
-		if (loopSearch == false)
+		if (loopSearch == false) {
 			return;
+		}
+		
 		var value = document.frmSearch.searchWord.value;
 		$.ajax({
 			type : "get",
@@ -71,11 +73,11 @@
 </script>
 <body>
 	<div id="logo">
-		<a href="${contextPath}/main/main.do"> <img width="176"
-			height="80" alt="booktopia"
-			src="${contextPath}/resources/image/Booktopia_Logo.jpg">
+		<a href="${contextPath}/main/main.do"> <img width="176" height="80" alt="booktopia"
+				src="${contextPath}/resources/image/Booktopia_Logo.jpg">
 		</a>
 	</div>
+	
 	<div id="head_link">
 		<ul>
 			<c:choose>
@@ -85,27 +87,30 @@
 					<li><a href="${contextPath}/cart/myCartList.do">장바구니</a></li>
 					<li><a href="#">주문배송</a></li>
 				</c:when>
+				
 				<c:otherwise>
 					<li><a href="${contextPath}/member/loginForm.do">로그인</a></li>
 					<li><a href="${contextPath}/member/memberForm.do">회원가입</a></li>
 				</c:otherwise>
 			</c:choose>
+			
 			<li><a href="#">고객센터</a></li>
 			<c:if test="${isLogOn==true and memberInfo.member_id =='admin' }">
-				<li class="no_line"><a
-					href="${contextPath}/admin/goods/adminGoodsMain.do">관리자</a></li>
+				<li class="no_line">
+					<a href="${contextPath}/admin/goods/adminGoodsMain.do">관리자</a>
+				</li>
 			</c:if>
-
 		</ul>
 	</div>
 	<br>
+	
 	<div id="search">
 		<form name="frmSearch" action="${contextPath}/goods/searchGoods.do">
-			<input name="searchWord" class="main_input" type="text"
-				onKeyUp="keywordSearch()"> <input type="submit"
-				name="search" class="btn1" value="검 색">
+			<input name="searchWord" class="main_input" type="text" onKeyUp="keywordSearch()">
+			<input type="submit" name="search" class="btn1" value="검 색">
 		</form>
 	</div>
+	
 	<div id="suggest">
 		<div id="suggestList"></div>
 	</div>
