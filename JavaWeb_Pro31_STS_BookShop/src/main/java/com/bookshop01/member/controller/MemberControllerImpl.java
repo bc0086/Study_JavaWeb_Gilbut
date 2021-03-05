@@ -93,7 +93,6 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 			message += " alert('ȸ�� ������ ���ƽ��ϴ�.�α���â���� �̵��մϴ�.');";
 			message += " location.href='" + request.getContextPath() + "/member/loginForm.do';";
 			message += " </script>";
-
 		} catch (Exception e) {
 			message = "<script>";
 			message += " alert('�۾� �� ������ �߻��߽��ϴ�. �ٽ� �õ��� �ּ���');";
@@ -109,8 +108,8 @@ public class MemberControllerImpl extends BaseController implements MemberContro
 	@Override
 	@RequestMapping(value = "/overlapped.do", method = RequestMethod.POST)
 	public ResponseEntity overlapped(@RequestParam("id") String id, 
-										HttpServletRequest request,
-										HttpServletResponse response) throws Exception {
+									HttpServletRequest request,
+									HttpServletResponse response) throws Exception {
 		ResponseEntity resEntity = null;
 		// 아이디 중복검사를 함
 		String result = memberService.overlapped(id);
