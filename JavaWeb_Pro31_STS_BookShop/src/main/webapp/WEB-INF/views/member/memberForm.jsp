@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<!-- 다음에서 제공하는 지도api -->
+<!-- 다음에서 제공하는 지도 api -->
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script>
 	function execDaumPostcode() {
@@ -62,6 +62,7 @@
 		}).open();
 	}
 
+	// 아이디 중복검사
 	function fn_overlapped() {
 		var _id = $("#_member_id").val();
 		
@@ -99,6 +100,7 @@
 	}
 </script>
 </head>
+
 <body>
 	<h3>필수입력사항</h3>
 	<form action="${contextPath}/member/addMember.do" method="post">
