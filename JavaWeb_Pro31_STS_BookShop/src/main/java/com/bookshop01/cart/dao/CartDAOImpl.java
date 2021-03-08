@@ -26,11 +26,14 @@ public class CartDAOImpl  implements  CartDAO{
 		myGoodsList = sqlSession.selectList("mapper.cart.selectGoodsList",cartList);
 		return myGoodsList;
 	}
+	
+	// 이미 장바구니에 추가된 상품인지 조회함
 	public boolean selectCountInCart(CartVO cartVO) throws DataAccessException {
-		String  result =sqlSession.selectOne("mapper.cart.selectCountInCart",cartVO);
+		String result =sqlSession.selectOne("mapper.cart.selectCountInCart",cartVO);
 		return Boolean.parseBoolean(result);
 	}
 
+	// 장바구니에 추가함
 	public void insertGoodsInCart(CartVO cartVO) throws DataAccessException{
 		int cart_id=selectMaxCartId();
 		cartVO.setCart_id(cart_id);

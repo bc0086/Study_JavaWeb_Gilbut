@@ -15,38 +15,41 @@ import com.bookshop01.cart.vo.CartVO;
 import com.bookshop01.goods.vo.GoodsVO;
 
 @Service("cartService")
-@Transactional(propagation=Propagation.REQUIRED)
-public class CartServiceImpl  implements CartService{
+@Transactional(propagation = Propagation.REQUIRED)
+public class CartServiceImpl implements CartService {
 	@Autowired
 	private CartDAO cartDAO;
-	
-	public Map<String ,List> myCartList(CartVO cartVO) throws Exception{
-		Map<String,List> cartMap=new HashMap<String,List>();
-		List<CartVO> myCartList=cartDAO.selectCartList(cartVO);
-		if(myCartList.size()==0){ //īƮ�� ����� ��ǰ�̾��� ���
+
+	public Map<String, List> myCartList(CartVO cartVO) throws Exception {
+		Map<String, List> cartMap = new HashMap<String, List>();
+		List<CartVO> myCartList = cartDAO.selectCartList(cartVO);
+		if (myCartList.size() == 0) { // 카트에 저장된 상품이 없는 경우
 			return null;
 		}
-		List<GoodsVO> myGoodsList=cartDAO.selectGoodsList(myCartList);
+		List<GoodsVO> myGoodsList = cartDAO.selectGoodsList(myCartList);
 		cartMap.put("myCartList", myCartList);
-		cartMap.put("myGoodsList",myGoodsList);
+		cartMap.put("myGoodsList", myGoodsList);
 		return cartMap;
 	}
-	
-	public boolean findCartGoods(CartVO cartVO) throws Exception{
-		 return cartDAO.selectCountInCart(cartVO);
-		
-	}	
-	public void addGoodsInCart(CartVO cartVO) throws Exception{
+
+	// 테이블에 추가하기 전에 동일한 상품 번호의 개수를 조회함
+	public boolean findCartGoods(CartVO cartVO) throws Exception {
+		return cartDAO.selectCountInCart(cartVO);
+	}
+
+	// 장바구니에 추가함
+	public void addGoodsInCart(CartVO cartVO) throws Exception {
 		cartDAO.insertGoodsInCart(cartVO);
 	}
-	
-	public boolean modifyCartQty(CartVO cartVO) throws Exception{
-		boolean result=true;
+
+	public boolean modifyCartQty(CartVO cartVO) throws Exception {
+		boolean result = true;
 		cartDAO.updateCartGoodsQty(cartVO);
 		return result;
 	}
-	public void removeCartGoods(int cart_id) throws Exception{
+
+	public void removeCartGoods(int cart_id) throws Exception {
 		cartDAO.deleteCartGoods(cart_id);
 	}
-	
+
 }

@@ -54,7 +54,7 @@
 			success : function(data, textStatus) {
 				//alert(data);
 				//	$('#message').append(data);
-				if (data.trim() == 'add_success') {
+				if (data.trim() == 'add_success') { // trim() : 문자열 좌우에서 공백제거 함수
 					imagePopup('open', '.layer01');
 				} else if (data.trim() == 'already_existed') {
 					alert("이미 카트에 등록된 상품입니다.");
@@ -241,6 +241,7 @@
 				</a>
 			</li>
 			<li>
+				<!-- 장바구니를 클릭하면 추가할 상품번호를 함수로 전달함 -->
 				<a class="cart" href="javascript:add_cart('${goods.goods_id }')">장바구니</a>
 			</li>
 			<li><a class="wish" href="#">위시리스트</a></li>
@@ -312,6 +313,8 @@
 			<form action='${contextPath}/cart/myCartList.do'>
 				<input type="submit" value="장바구니 보기">
 			</form>
+		</div>
+	</div>
 </body>
 </html>
 <input type="hidden" name="isLogOn" id="isLogOn" value="${isLogOn}" />

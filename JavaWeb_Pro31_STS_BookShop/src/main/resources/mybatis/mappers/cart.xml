@@ -12,7 +12,7 @@
 		<result property="cart_goods_qty" column="cart_goods_qty" />
 		<result property="creDate" column="creDate" />
 	</resultMap>
-	
+
 	<resultMap id="goodsResult" type="GoodsVO">
 		<result property="goods_id" column="goods_id" />
 		<result property="goods_title" column="goods_title" />
@@ -35,43 +35,51 @@
 		<result property="goods_intro" column="goods_intro" />
 	</resultMap>
 
-	<select id="selectCartList"  parameterType="cartVO"  resultMap="cartResult"   >
+	
+	<select id="selectCartList" parameterType="cartVO" resultMap="cartResult">
 	    <![CDATA[
-		select * from t_shopping_cart 
-		where member_id=#{member_id} 
+			SELECT * 
+			FROM t_shopping_cart 
+			WHERE member_id = #{member_id} 
 		]]>
 	</select>
 
 	<select id="selectGoodsList" resultMap="goodsResult" parameterType="java.util.Map">
       <![CDATA[
-          select g.*,d.fileName from t_shopping_goods g, t_goods_detail_image d
-          where g.goods_id=d.goods_id
-          and d.filetype='main_image'
-           and g.goods_id in
+          SELECT g.*, d.fileName 
+          FROM t_shopping_goods g, t_goods_detail_image d
+          WHERE g.goods_id = d.goods_id
+          	AND d.filetype = 'main_image'
+          	AND g.goods_id in
       ]]>
 		<foreach item="item" collection="list" open="(" separator="," close=")">
 			#{item.goods_id}
 		</foreach>
-		order by g.goods_creDate desc
+		ORDER BY g.goods_creDate DESC
 	</select>
 
+	<!-- 장바구니 테이블에 추가하기전에 그 상품 번호가 장바구니에 담겨있는지 조회함. -->
 	<select id="selectCountInCart" resultType="String" parameterType="cartVO">
 	    <![CDATA[
-		    select decode(count(*), 0, 'false', 'true') from t_shopping_cart
-			where goods_id=#{goods_id}
-			  and member_id=#{member_id} 
-
+		    SELECT DECODE(count(*), 0, 'false', 'true') from t_shopping_cart
+			WHERE goods_id=#{goods_id}
+			  AND member_id=#{member_id} 
     	]]>
 	</select>
 
+	<!-- 장바구니에 상품 추가 -->
 	<insert id="insertGoodsInCart" parameterType="cartVO">
 	    <![CDATA[
-		    	insert into t_shopping_cart(cart_id,
-		    	                           goods_id,
-		    	                           member_id)
-		        				 values(#{cart_id},
-    							        #{goods_id},
-    							        #{member_id})
+	    	INSERT INTO t_shopping_cart (
+	    		cart_id,
+	    		goods_id,
+	    	    member_id
+	    	)
+	    	VALUES (
+	    		#{cart_id},
+	    		#{goods_id},
+	  			#{member_id}
+	  		)
     	]]>
 	</insert>
 
@@ -89,7 +97,7 @@
 	      where cart_id=#{cart_id}
     	]]>
 	</delete>
-	
+
 	<select id="selectMaxCartId" resultType="int">
 	    <![CDATA[
 			select nvl(max(cart_id), 0) + 1 from t_shopping_cart 

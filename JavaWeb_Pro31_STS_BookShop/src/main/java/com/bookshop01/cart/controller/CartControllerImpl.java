@@ -25,73 +25,81 @@ import com.bookshop01.goods.vo.GoodsVO;
 import com.bookshop01.member.vo.MemberVO;
 
 @Controller("cartController")
-@RequestMapping(value="/cart")
-public class CartControllerImpl extends BaseController implements CartController{
+@RequestMapping(value = "/cart")
+public class CartControllerImpl extends BaseController implements CartController {
 	@Autowired
 	private CartService cartService;
+
 	@Autowired
 	private CartVO cartVO;
+
 	@Autowired
 	private MemberVO memberVO;
-	
-	@RequestMapping(value="/myCartList.do" ,method = RequestMethod.GET)
-	public ModelAndView myCartMain(HttpServletRequest request, HttpServletResponse response)  throws Exception {
-		String viewName=(String)request.getAttribute("viewName");
+
+	@RequestMapping(value = "/myCartList.do", method = RequestMethod.GET)
+	public ModelAndView myCartMain(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String viewName = (String) request.getAttribute("viewName");
 		ModelAndView mav = new ModelAndView(viewName);
-		HttpSession session=request.getSession();
-		MemberVO memberVO=(MemberVO)session.getAttribute("memberInfo");
-		String member_id=memberVO.getMember_id();
+		HttpSession session = request.getSession();
+		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
+		String member_id = memberVO.getMember_id();
 		cartVO.setMember_id(member_id);
-		Map<String ,List> cartMap=cartService.myCartList(cartVO);
-		session.setAttribute("cartMap", cartMap);//Àå¹Ù±¸´Ï ¸ñ·Ï È­¸é¿¡¼­ »óÇ° ÁÖ¹® ½Ã »ç¿ëÇÏ±â À§ÇØ¼­ Àå¹Ù±¸´Ï ¸ñ·ÏÀ» ¼¼¼Ç¿¡ ÀúÀåÇÑ´Ù.
-		//mav.addObject("cartMap", cartMap);
+		Map<String, List> cartMap = cartService.myCartList(cartVO);
+		session.setAttribute("cartMap", cartMap);
+			//ì¥ë°”êµ¬ë‹ˆ ëª©ë¡ í™”ë©´ì—ì„œ ìƒí’ˆ ì£¼ë¬¸ ì‹œ ì‚¬ìš©í•˜ê¸° ìœ„í•´ì„œ ì¥ë°”êµ¬ë‹ˆ ëª©ë¡ì„ ì„¸ì…˜ì— ì €ì¥
+		// mav.addObject("cartMap", cartMap);
 		return mav;
 	}
-	@RequestMapping(value="/addGoodsInCart.do" ,method = RequestMethod.POST,produces = "application/text; charset=utf8")
-	public  @ResponseBody String addGoodsInCart(@RequestParam("goods_id") int goods_id,
-			                    HttpServletRequest request, HttpServletResponse response)  throws Exception{
-		HttpSession session=request.getSession();
-		memberVO=(MemberVO)session.getAttribute("memberInfo");
-		String member_id=memberVO.getMember_id();
-		
+
+	// ë¸Œë¼ìš°ì €ì—ì„œ ì „ì†¡ëœ ìƒí’ˆë²ˆí˜¸ë¥¼ ì´ìš©í•´ ê·¸ ìƒí’ˆì´ ì¥ë°”êµ¬ë‹ˆ í…Œì´ë¸”ì— ì¶”ê°€ëœ ìƒí’ˆì¸ì§€ í™•ì¸
+	@RequestMapping(value = "/addGoodsInCart.do", method = RequestMethod.POST, 
+				produces = "application/text; charset=utf8")
+	public @ResponseBody String addGoodsInCart(@RequestParam("goods_id") int goods_id, 
+				HttpServletRequest request, HttpServletResponse response) throws Exception {
+		HttpSession session = request.getSession();
+		memberVO = (MemberVO) session.getAttribute("memberInfo");
+		String member_id = memberVO.getMember_id();
+
 		cartVO.setMember_id(member_id);
-		//Ä«Æ® µî·ÏÀü¿¡ ÀÌ¹Ì µî·ÏµÈ Á¦Ç°ÀÎÁö ÆÇº°ÇÑ´Ù.
+		// ì¹´íŠ¸ ë“±ë¡ì „ ì´ë¯¸ ë“±ë¡ëœ ì œí’ˆì¸ì§€ í™•ì¸í•œë‹¤.
 		cartVO.setGoods_id(goods_id);
 		cartVO.setMember_id(member_id);
-		boolean isAreadyExisted=cartService.findCartGoods(cartVO);
-		System.out.println("isAreadyExisted:"+isAreadyExisted);
-		if(isAreadyExisted==true){
+		boolean isAreadyExisted = cartService.findCartGoods(cartVO);
+			// ìƒí’ˆ ë²ˆí˜¸ê°€ ì¥ë°”êµ¬ë‹ˆ í…Œì´ë¸”ì— ìˆëŠ”ì§€ ì¡°íšŒí•¨
+		System.out.println("isAreadyExisted:" + isAreadyExisted);
+		
+		if (isAreadyExisted == true) {
 			return "already_existed";
-		}else{
+		} else {
 			cartService.addGoodsInCart(cartVO);
 			return "add_success";
 		}
 	}
-	
-	@RequestMapping(value="/modifyCartQty.do" ,method = RequestMethod.POST)
-	public @ResponseBody String  modifyCartQty(@RequestParam("goods_id") int goods_id,
-			                                   @RequestParam("cart_goods_qty") int cart_goods_qty,
-			                                    HttpServletRequest request, HttpServletResponse response)  throws Exception{
-		HttpSession session=request.getSession();
-		memberVO=(MemberVO)session.getAttribute("memberInfo");
-		String member_id=memberVO.getMember_id();
+
+	@RequestMapping(value = "/modifyCartQty.do", method = RequestMethod.POST)
+	public @ResponseBody String modifyCartQty(@RequestParam("goods_id") int goods_id,
+			@RequestParam("cart_goods_qty") int cart_goods_qty, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		HttpSession session = request.getSession();
+		memberVO = (MemberVO) session.getAttribute("memberInfo");
+		String member_id = memberVO.getMember_id();
 		cartVO.setGoods_id(goods_id);
 		cartVO.setMember_id(member_id);
 		cartVO.setCart_goods_qty(cart_goods_qty);
-		boolean result=cartService.modifyCartQty(cartVO);
-		
-		if(result==true){
-		   return "modify_success";
-		}else{
-			  return "modify_failed";	
+		boolean result = cartService.modifyCartQty(cartVO);
+
+		if (result == true) {
+			return "modify_success";
+		} else {
+			return "modify_failed";
 		}
-		
+
 	}
-	
-	@RequestMapping(value="/removeCartGoods.do" ,method = RequestMethod.POST)
-	public ModelAndView removeCartGoods(@RequestParam("cart_id") int cart_id,
-			                          HttpServletRequest request, HttpServletResponse response)  throws Exception{
-		ModelAndView mav=new ModelAndView();
+
+	@RequestMapping(value = "/removeCartGoods.do", method = RequestMethod.POST)
+	public ModelAndView removeCartGoods(@RequestParam("cart_id") int cart_id, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		ModelAndView mav = new ModelAndView();
 		cartService.removeCartGoods(cart_id);
 		mav.setViewName("redirect:/cart/myCartList.do");
 		return mav;
