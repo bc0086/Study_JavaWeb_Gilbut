@@ -23,13 +23,16 @@ public class CartServiceImpl implements CartService {
 	public Map<String, List> myCartList(CartVO cartVO) throws Exception {
 		Map<String, List> cartMap = new HashMap<String, List>();
 		List<CartVO> myCartList = cartDAO.selectCartList(cartVO);
+			// 장바구니 페이지에 표시할 장바구니 정보를 조회함
 		if (myCartList.size() == 0) { // 카트에 저장된 상품이 없는 경우
 			return null;
 		}
 		List<GoodsVO> myGoodsList = cartDAO.selectGoodsList(myCartList);
+			// 장바구니 페이지에 표시할 상품정보를 조회함
 		cartMap.put("myCartList", myCartList);
 		cartMap.put("myGoodsList", myGoodsList);
 		return cartMap;
+			// 장바구니 정보화 상품 정보를 cartMap에 저장하여 반환함
 	}
 
 	// 테이블에 추가하기 전에 동일한 상품 번호의 개수를 조회함
@@ -51,5 +54,4 @@ public class CartServiceImpl implements CartService {
 	public void removeCartGoods(int cart_id) throws Exception {
 		cartDAO.deleteCartGoods(cart_id);
 	}
-
 }

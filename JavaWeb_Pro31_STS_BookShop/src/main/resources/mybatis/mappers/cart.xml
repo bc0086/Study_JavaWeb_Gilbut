@@ -4,7 +4,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="mapper.cart">
-	<!-- 리절트 맵 정의 -->
+	<!-- 장바구니 정보를 저장할 리절트 맵 정의 -->
 	<resultMap id="cartResult" type="CartVO">
 		<result property="cart_id" column="cart_id" />
 		<result property="goods_id" column="goods_title" />
@@ -13,6 +13,7 @@
 		<result property="creDate" column="creDate" />
 	</resultMap>
 
+	<!-- 장바구니 페이지에 표시할 상품 정보를 저장할 리절트 맵 정의 -->
 	<resultMap id="goodsResult" type="GoodsVO">
 		<result property="goods_id" column="goods_id" />
 		<result property="goods_title" column="goods_title" />
@@ -35,7 +36,7 @@
 		<result property="goods_intro" column="goods_intro" />
 	</resultMap>
 
-	
+	<!-- 모든 장바구니 정보를 조회함 -->
 	<select id="selectCartList" parameterType="cartVO" resultMap="cartResult">
 	    <![CDATA[
 			SELECT * 
@@ -44,6 +45,7 @@
 		]]>
 	</select>
 
+	<!-- 장바구니 테이블에 등록된 상품번호를 이용해 상품 정보를 조회함 -->
 	<select id="selectGoodsList" resultMap="goodsResult" parameterType="java.util.Map">
       <![CDATA[
           SELECT g.*, d.fileName 
@@ -62,8 +64,8 @@
 	<select id="selectCountInCart" resultType="String" parameterType="cartVO">
 	    <![CDATA[
 		    SELECT DECODE(count(*), 0, 'false', 'true') from t_shopping_cart
-			WHERE goods_id=#{goods_id}
-			  AND member_id=#{member_id} 
+			WHERE goods_id = #{goods_id}
+			  AND member_id = #{member_id} 
     	]]>
 	</select>
 
@@ -91,6 +93,7 @@
 			        and goods_id=#{goods_id}
     	]]>
 	</update>
+	
 	<delete id="deleteCartGoods" parameterType="int">
 	    <![CDATA[
 	      delete from t_shopping_cart
