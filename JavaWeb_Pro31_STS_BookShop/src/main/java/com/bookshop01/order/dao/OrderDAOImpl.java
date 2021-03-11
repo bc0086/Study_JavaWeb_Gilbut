@@ -23,12 +23,14 @@ public class OrderDAOImpl implements OrderDAO {
 	
 	public void insertNewOrder(List<OrderVO> myOrderList) throws DataAccessException{
 		int order_id=selectOrderID();
+			// 각 orderVO에 설정할 주문 번호를 가져옴
+		
 		for(int i=0; i<myOrderList.size();i++){
 			OrderVO orderVO =(OrderVO)myOrderList.get(i);
 			orderVO.setOrder_id(order_id);
 			sqlSession.insert("mapper.order.insertNewOrder",orderVO);
-		}
-		
+		}	
+			// 주문 목록에서 차례대로 orderVO를 가져와 주문번호를 설정함
 	}	
 	
 	public OrderVO findMyOrder(String order_id) throws DataAccessException{
