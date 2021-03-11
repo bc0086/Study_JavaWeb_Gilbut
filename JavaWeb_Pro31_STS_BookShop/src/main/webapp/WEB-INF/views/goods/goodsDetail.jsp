@@ -84,16 +84,21 @@
 	}
 
 	function fn_order_each_goods(goods_id, goods_title, goods_sales_price, fileName) {
+		// hidden태그의 id로 로그인 상태를 가져옴
 		var _isLogOn = document.getElementById("isLogOn");
 		var isLogOn = _isLogOn.value;
 
+		// 로그인 상태를 확인함
 		if (isLogOn == "false" || isLogOn == '') {
 			alert("로그인 후 주문이 가능합니다!!!");
 		}
 
 		var total_price, final_total_price;
+		
+		// 상품 주문 개수를 가져옴
 		var order_goods_qty = document.getElementById("order_goods_qty");
 
+		// form태그를 동적으로 생성함
 		var formObj = document.createElement("form");
 		var i_goods_id = document.createElement("input");
 		var i_goods_title = document.createElement("input");
@@ -101,6 +106,7 @@
 		var i_fileName = document.createElement("input");
 		var i_order_goods_qty = document.createElement("input");
 
+		// input태그에 name/value로 값을 설정함
 		i_goods_id.name = "goods_id";
 		i_goods_title.name = "goods_title";
 		i_goods_sales_price.name = "goods_sales_price";
@@ -113,12 +119,14 @@
 		i_goods_sales_price.value = goods_sales_price;
 		i_fileName.value = fileName;
 
+		// 동적으로 생성한 input태그에 값을 설정한 후 다시 form태그에 추가함
 		formObj.appendChild(i_goods_id);
 		formObj.appendChild(i_goods_title);
 		formObj.appendChild(i_goods_sales_price);
 		formObj.appendChild(i_fileName);
 		formObj.appendChild(i_order_goods_qty);
 
+		// 컨트롤러로 요청하면서 input태그의 값을 매개변수로 전달함
 		document.body.appendChild(formObj);
 		formObj.method = "post";
 		formObj.action = "${contextPath}/order/orderEachGoods.do";
@@ -216,6 +224,7 @@
 					<td class="fixed">지금 주문 시 내일 도착 예정</td>
 				</tr>
 				
+				<!-- 셀렉트 박스로 주문 수량을 선택함 -->
 				<tr>
 					<td class="fixed">수량</td>
 					<td class="fixed">
@@ -232,6 +241,8 @@
 		</table>
 		
 		<ul>
+			<!-- 구매하기 클릭 시 자바스크립트 함수로 상품 번호, 상품명, 판매가격, 이미지
+				 파일이름을 전달함 -->
 			<li>
 				<a class="buy" href="javascript:fn_order_each_goods('${goods.goods_id }',
 						'${goods.goods_title }',
@@ -317,4 +328,5 @@
 	</div>
 </body>
 </html>
+<!-- 로그인 상태를 hidden태그에 저장함 -->
 <input type="hidden" name="isLogOn" id="isLogOn" value="${isLogOn}" />

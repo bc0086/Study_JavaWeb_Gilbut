@@ -77,6 +77,7 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 	}
 
 	@RequestMapping(value = "/orderAllCartGoods.do", method = RequestMethod.POST)
+	// 선택한 상품 수량을 배열로 받음
 	public ModelAndView orderAllCartGoods(@RequestParam("cart_goods_qty") String[] cart_goods_qty,
 				HttpServletRequest request, 
 				HttpServletResponse response) throws Exception {
@@ -84,16 +85,20 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 		ModelAndView mav = new ModelAndView(viewName);
 		HttpSession session = request.getSession();
 		
+		// 미리 세션에 저장한 장바구니 상품 목록을 가져옴
 		Map cartMap = (Map) session.getAttribute("cartMap");
 		List myOrderList = new ArrayList<OrderVO>();
-
 		List<GoodsVO> myGoodsList = (List<GoodsVO>) cartMap.get("myGoodsList");
 		MemberVO memberVO = (MemberVO) session.getAttribute("memberInfo");
 
+		// 장바구니 상품 개수만큼 반복함
 		for (int i = 0; i < cart_goods_qty.length; i++) {
+			/* 문자열로 결합되어 전송된 상품 번호와 주문 술향을 split()메서드를 이용해 분리 */
 			String[] cart_goods = cart_goods_qty[i].split(":");
 			for (int j = 0; j < myGoodsList.size(); j++) {
+				// 장바구니 목록에서 차례로 GoodsVO를 가져옴
 				GoodsVO goodsVO = myGoodsList.get(j);
+				// GoodsVO의 상품 번호를 가져옴
 				int goods_id = goodsVO.getGoods_id();
 				if (goods_id == Integer.parseInt(cart_goods[0])) {
 					OrderVO _orderVO = new OrderVO();
@@ -108,8 +113,13 @@ public class OrderControllerImpl extends BaseController implements OrderControll
 					myOrderList.add(_orderVO);
 					break;
 				}
+					/* 전송된 상품번호와 GoodsVO의 상품번호가 같으면 주문하는 상품이므로 
+					 * OrderVO객체를 생성한 후 상품 정보를 OrderVO에 설정함.
+					 * 그리고 다시 myOrderList에 저장함 */
 			}
 		}
+		/* 장바구니 목록에서 주문하기 위해 선택한 상품한 myOrderList에 저장한 후 세션에
+		 * 바인딩 함 */
 		session.setAttribute("myOrderList", myOrderList);
 		session.setAttribute("orderer", memberVO);
 		return mav;

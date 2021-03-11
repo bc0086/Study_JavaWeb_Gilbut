@@ -98,22 +98,23 @@
         }).open();
     }
     
-  window.onload=function()
-  {
-    init();
-  }
+	// 상품 주문 페이지가 표시되면 주문자의 휴대폰번호와 유선 전화번호를 셀렉트 박스에 표시함
+	window.onload=function()
+	{
+  		init();
+	}
 
-  function init(){
-  	var form_order=document.form_order;
-  	var h_tel1=form_order.h_tel1;
-  	var h_hp1=form_order.h_hp1;
-  	var tel1=h_tel1.value;
-  	var hp1=h_hp1.value;
-  	var select_tel1=form_order.tel1;
-  	var select_hp1=form_order.hp1;
-  	select_tel1.value=tel1;
-  	select_hp1.value=hp1;
-  }    
+	function init() {
+  		var form_order=document.form_order;
+	  	var h_tel1=form_order.h_tel1;
+	  	var h_hp1=form_order.h_hp1;
+	  	var tel1=h_tel1.value;
+	  	var hp1=h_hp1.value;
+	  	var select_tel1=form_order.tel1;
+	  	var select_hp1=form_order.hp1;
+	  	select_tel1.value=tel1;
+	  	select_hp1.value=hp1;
+    }    
     
 	function reset_all() {
 		var e_receiver_name = document.getElementById("receiver_name");
@@ -414,90 +415,90 @@ function fn_show_order_detail(){
 	imagePopup('open');
 }
 
-function fn_process_pay_order(){
+	/* 최종 결제하기를 클릭하면 input태그를 동적으로 생성한 후 주문창에서 입력한 수령자
+		정보를 설정하여 컨트롤러로 전송함 */
+	function fn_process_pay_order() {
+		alert("최종 결제하기");
+		var formObj=document.createElement("form");
+	    var i_receiver_name=document.createElement("input");
+	    
+	    var i_receiver_hp1=document.createElement("input");
+	    var i_receiver_hp2=document.createElement("input");
+	    var i_receiver_hp3=document.createElement("input");
+	   
+	    var i_receiver_tel1=document.createElement("input");
+	    var i_receiver_tel2=document.createElement("input");
+	    var i_receiver_tel3=document.createElement("input");
+	    
+	    var i_delivery_address=document.createElement("input");
+	    var i_delivery_message=document.createElement("input");
+	    var i_delivery_method=document.createElement("input");
+	    var i_gift_wrapping=document.createElement("input");
+	    var i_pay_method=document.createElement("input");
+	    var i_card_com_name=document.createElement("input");
+	    var i_card_pay_month=document.createElement("input");
+	    var i_pay_orderer_hp_num=document.createElement("input");
+	   
+	    i_receiver_name.name="receiver_name";
+	    i_receiver_hp1.name="receiver_hp1";
+	    i_receiver_hp2.name="receiver_hp2";
+	    i_receiver_hp3.name="receiver_hp3";
+	   
+	    i_receiver_tel1.name="receiver_tel1";
+	    i_receiver_tel2.name="receiver_tel2";
+	    i_receiver_tel3.name="receiver_tel3";
+	   
+	    i_delivery_address.name="delivery_address";
+	    i_delivery_message.name="delivery_message";
+	    i_delivery_method.name="delivery_method";
+	    i_gift_wrapping.name="gift_wrapping";
+	    i_pay_method.name="pay_method";
+	    i_card_com_name.name="card_com_name";
+	    i_card_pay_month.name="card_pay_month";
+	    i_pay_orderer_hp_num.name="pay_orderer_hp_num";
+	  
+	    i_receiver_name.value=receiver_name;
+	    i_receiver_hp1.value=hp1;
+	    i_receiver_hp2.value=hp2;
+	    i_receiver_hp3.value=hp3;
+	    
+	    i_receiver_tel1.value=tel1;
+	    i_receiver_tel2.value=tel2;
+	    i_receiver_tel3.value=tel3;
+	    ;
+	    i_delivery_address.value=delivery_address;
+	    i_delivery_message.value=delivery_message;
+	    i_delivery_method.value=delivery_method;
+	    i_gift_wrapping.value=gift_wrapping;
+	    i_pay_method.value=pay_method;
+	    i_card_com_name.value=card_com_name;
+	    i_card_pay_month.value=card_pay_month;
+	    i_pay_orderer_hp_num.value=pay_orderer_hp_num;
+	    
+	    formObj.appendChild(i_receiver_name);
+	    formObj.appendChild(i_receiver_hp1);
+	    formObj.appendChild(i_receiver_hp2);
+	    formObj.appendChild(i_receiver_hp3);
+	    formObj.appendChild(i_receiver_tel1);
+	    formObj.appendChild(i_receiver_tel2);
+	    formObj.appendChild(i_receiver_tel3);
 	
-	alert("최종 결제하기");
-	var formObj=document.createElement("form");
-    var i_receiver_name=document.createElement("input");
-    
-    var i_receiver_hp1=document.createElement("input");
-    var i_receiver_hp2=document.createElement("input");
-    var i_receiver_hp3=document.createElement("input");
-   
-    var i_receiver_tel1=document.createElement("input");
-    var i_receiver_tel2=document.createElement("input");
-    var i_receiver_tel3=document.createElement("input");
-    
-    var i_delivery_address=document.createElement("input");
-    var i_delivery_message=document.createElement("input");
-    var i_delivery_method=document.createElement("input");
-    var i_gift_wrapping=document.createElement("input");
-    var i_pay_method=document.createElement("input");
-    var i_card_com_name=document.createElement("input");
-    var i_card_pay_month=document.createElement("input");
-    var i_pay_orderer_hp_num=document.createElement("input");
-   
-    i_receiver_name.name="receiver_name";
-    i_receiver_hp1.name="receiver_hp1";
-    i_receiver_hp2.name="receiver_hp2";
-    i_receiver_hp3.name="receiver_hp3";
-   
-    i_receiver_tel1.name="receiver_tel1";
-    i_receiver_tel2.name="receiver_tel2";
-    i_receiver_tel3.name="receiver_tel3";
-   
-    i_delivery_address.name="delivery_address";
-    i_delivery_message.name="delivery_message";
-    i_delivery_method.name="delivery_method";
-    i_gift_wrapping.name="gift_wrapping";
-    i_pay_method.name="pay_method";
-    i_card_com_name.name="card_com_name";
-    i_card_pay_month.name="card_pay_month";
-    i_pay_orderer_hp_num.name="pay_orderer_hp_num";
-  
-    i_receiver_name.value=receiver_name;
-    i_receiver_hp1.value=hp1;
-    i_receiver_hp2.value=hp2;
-    i_receiver_hp3.value=hp3;
-    
-    i_receiver_tel1.value=tel1;
-    i_receiver_tel2.value=tel2;
-    i_receiver_tel3.value=tel3;
-    ;
-    i_delivery_address.value=delivery_address;
-    i_delivery_message.value=delivery_message;
-    i_delivery_method.value=delivery_method;
-    i_gift_wrapping.value=gift_wrapping;
-    i_pay_method.value=pay_method;
-    i_card_com_name.value=card_com_name;
-    i_card_pay_month.value=card_pay_month;
-    i_pay_orderer_hp_num.value=pay_orderer_hp_num;
-    
-    formObj.appendChild(i_receiver_name);
-    formObj.appendChild(i_receiver_hp1);
-    formObj.appendChild(i_receiver_hp2);
-    formObj.appendChild(i_receiver_hp3);
-    formObj.appendChild(i_receiver_tel1);
-    formObj.appendChild(i_receiver_tel2);
-    formObj.appendChild(i_receiver_tel3);
-
-    formObj.appendChild(i_delivery_address);
-    formObj.appendChild(i_delivery_message);
-    formObj.appendChild(i_delivery_method);
-    formObj.appendChild(i_gift_wrapping);
-    
-    formObj.appendChild(i_pay_method);
-    formObj.appendChild(i_card_com_name);
-    formObj.appendChild(i_card_pay_month);
-    formObj.appendChild(i_pay_orderer_hp_num);
-    
-
-    document.body.appendChild(formObj); 
-    formObj.method="post";
-    formObj.action="${contextPath}/order/payToOrderGoods.do";
-    formObj.submit();
-	imagePopup('close');
-}
+	    formObj.appendChild(i_delivery_address);
+	    formObj.appendChild(i_delivery_message);
+	    formObj.appendChild(i_delivery_method);
+	    formObj.appendChild(i_gift_wrapping);
+	    
+	    formObj.appendChild(i_pay_method);
+	    formObj.appendChild(i_card_com_name);
+	    formObj.appendChild(i_card_pay_month);
+	    formObj.appendChild(i_pay_orderer_hp_num);
+	
+	    document.body.appendChild(formObj); 
+	    formObj.method="post";
+	    formObj.action="${contextPath}/order/payToOrderGoods.do";
+	    formObj.submit();
+		imagePopup('close');
+	}
 </script>
 </head>
 <body>
@@ -912,7 +913,7 @@ function fn_process_pay_order(){
 					     주문자:
 					 </td>
 					 <td>
-					      <p id="p_orderer_name"> 주문자 이름</p>
+					 	<p id="p_orderer_name"> 주문자 이름</p>
 					 </td>
 				   </tr>
 				   <tr>
@@ -920,7 +921,7 @@ function fn_process_pay_order(){
 					     받는사람:
 					 </td>
 					 <td>
-					      <p id="p_receiver_name">받는사람이름</p>
+					 	<p id="p_receiver_name">받는사람이름</p>
 					 </td>
 				   </tr>
 				   <tr>
@@ -979,10 +980,12 @@ function fn_process_pay_order(){
 					      <p id="p_pay_method">결제방법</p>
 					 </td>
 				   </tr>
+				   
+				   <!-- 최종결제하기 클릭 시 호출 됨 -->
 				   <tr>
-				    <td colspan=2 align=center>
-				    <input  name="btn_process_pay_order" type="button" onClick="fn_process_pay_order()" value="최종결제하기">
-				    </td>
+				   		<td colspan=2 align=center>
+				    		<input  name="btn_process_pay_order" type="button" onClick="fn_process_pay_order()" value="최종결제하기">
+				   		</td>
 				   </tr>
 				</tbody>
 				</table>

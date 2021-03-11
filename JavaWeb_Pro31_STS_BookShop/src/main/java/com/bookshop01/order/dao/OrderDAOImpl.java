@@ -42,15 +42,17 @@ public class OrderDAOImpl implements OrderDAO {
 		sqlSession.delete("mapper.order.deleteGoodsFromCart",orderVO);
 	}
 	
+	// 장바구니에서 주문한 경우 해당 상품을 장바구니에서 삭제함
 	public void removeGoodsFromCart(List<OrderVO> myOrderList)throws DataAccessException{
 		for(int i=0; i<myOrderList.size();i++){
 			OrderVO orderVO =(OrderVO)myOrderList.get(i);
 			sqlSession.delete("mapper.order.deleteGoodsFromCart",orderVO);		
 		}
 	}	
+	
+	// 테이블에 저장할 주문 번호를 가져옴
 	private int selectOrderID() throws DataAccessException{
 		return sqlSession.selectOne("mapper.order.selectOrderID");
-		
 	}
 }
 

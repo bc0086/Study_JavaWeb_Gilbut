@@ -147,16 +147,20 @@
 	}
 
 	function fn_order_all_cart_goods() {
-	//	alert("모두 주문하기");
+	// alert("모두 주문하기");
 		var order_goods_qty;
 		var order_goods_id;
 		var objForm=document.frm_order_all_cart;
 		var cart_goods_qty=objForm.cart_goods_qty;
 		var h_order_each_goods_qty=objForm.h_order_each_goods_qty;
+		// 상품 주문 여부를 체크하는 체크박스 객체를 가져옴
 		var checked_goods=objForm.checked_goods;
+		// 주문용으로 선택한 총 상품 개수를 가져옴
 		var length=checked_goods.length;
 		
-		//alert(length);
+		// alert(length);
+		/* 여러 상품을 주문할 경우 하나의 상품에 대해 '상품번호:주문수량' 문자열을 만든 후
+			전체 상품 정보를 배열로 전송함 */
 		if(length>1){
 			for(var i=0; i<length;i++){
 				if(checked_goods[i].checked==true){
@@ -168,7 +172,8 @@
 					console.log(cart_goods_qty[i].value);
 				}
 			}	
-		}else{
+		} else {
+			// 상품을 하나만 주문할 경우 문자열로 전송함
 			order_goods_id=checked_goods.value;
 			order_goods_qty=cart_goods_qty.value;
 			cart_goods_qty.value=order_goods_id+":"+order_goods_qty;
@@ -179,7 +184,6 @@
 	 	objForm.action="${contextPath}/order/orderAllCartGoods.do";
 		objForm.submit();
 	}
-
 </script>
 </head>
 <body>
