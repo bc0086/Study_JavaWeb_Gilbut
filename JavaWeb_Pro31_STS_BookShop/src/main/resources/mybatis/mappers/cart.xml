@@ -87,23 +87,24 @@
 
 	<update id="updateCartGoodsQty" parameterType="cartVO">
 	    <![CDATA[
-			update t_shopping_cart
-			       set cart_goods_qty=#{cart_goods_qty}
-		 	       where member_id=#{member_id}
-			        and goods_id=#{goods_id}
+			UPDATE t_shopping_cart
+			SET cart_goods_qty=#{cart_goods_qty}
+		 	WHERE member_id=#{member_id}
+				AND goods_id=#{goods_id}
     	]]>
 	</update>
 	
 	<delete id="deleteCartGoods" parameterType="int">
 	    <![CDATA[
-	      delete from t_shopping_cart
-	      where cart_id=#{cart_id}
+	    	DELETE FROM t_shopping_cart
+	      	WHERE cart_id = #{cart_id}
     	]]>
 	</delete>
 
 	<select id="selectMaxCartId" resultType="int">
 	    <![CDATA[
-			select nvl(max(cart_id), 0) + 1 from t_shopping_cart 
+			SELECT NVL(MAX(cart_id), 0) + 1 
+			FROM t_shopping_cart 
     	]]>
 	</select>
 
